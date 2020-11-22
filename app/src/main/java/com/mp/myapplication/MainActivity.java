@@ -37,12 +37,35 @@ import java.util.Map;
 
 public class MainActivity extends Activity {
     JSONObject Shoot=null;
+    JSONObject matchDetail=null;
+    JSONObject Pass=null;
     JSONArray matchInfo=null;
+    String div="--------------------------------------------\n";
     String ShootTotal="";
     String shootOutPenalty="";
+    String shootHeading="";
     String longshoot1="";
+    String Possesion="";
+    String Possesion1="";
+    String Heading1="";
+    String shortPass1="";
+    String longPass1="";
+    String drivenPass1="";
+    String throughPass1="";
+    String passTry="";
+    String shortPassTry="";
+    String longPassTry="";
+    String drivenGroundPassTry="";
+    String throughPassTry="";
     int st=0;
     int sop=0;
+    int ps=0;
+    int hd=0;
+    int pt=0;
+    int spt=0;
+    int lpt=0;
+    int dgpt=0;
+    int tpt=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -359,24 +382,58 @@ public class MainActivity extends Activity {
             //Log.d("test", "json_array.get(0) = " + json_array.get(0));
             int shootnum=0;
             int sopnum=0;
+            int matchnum=0;
+            int psnum=0;
+            int hdnum=0;
+            int passnum=0;
+            int shortpassnum=0;
+            int longpassnum=0;
+            int drivenpassnum=0;
+            int throughpassnum=0;
             for (int i=0;i<10;i++){
                 //Log.d("json","j"+json_array.get(i));
                 result1=json_array.get(i).toString();
                 getMatchInfo(result1,ID);
+                matchnum+=1;
                 shootnum+=st;
                 sopnum+=sop;
+                psnum+=ps;
+                hdnum+=hd;
+                passnum+=pt;
+                shortpassnum+=spt;
+                longpassnum+=lpt;
+                drivenpassnum+=dgpt;
+                throughpassnum+=tpt;
+                Log.d("psnum","msg"+psnum);
             }
+
+            Log.d("ps","ms"+psnum+" "+passnum+" "+shortpassnum+" "+shootnum);
             double longshoot=(sopnum/(double)shootnum)*100;
+            double possession=(psnum/(double)matchnum);
+            double heading=(hdnum/(double)shootnum)*100;
+            double shortpass=(shortpassnum/(double)passnum)*100;
+            //Log.d("short","dfa"+shortpass);
+            double longpass=(longpassnum/(double)passnum)*100;
+            double drivenpass=(drivenpassnum/(double)passnum)*100;
+            double throughpass=(throughpassnum/(double)passnum)*100;
             longshoot1 = String.format("%.2f", longshoot);
+            Possesion1=String.format("%.2f",possession);
+            Heading1=String.format("%.2f",heading);
+            shortPass1=String.format("%.2f",shortpass);
+            longPass1=String.format("%.2f",longpass);
+            drivenPass1=String.format("%.2f",drivenpass);
+            throughPass1=String.format("%.2f",throughpass);
         }
 
         catch (Exception e) {
             // Error calling the rest api
             Log.e("REST_API", "GET method failed: " + e.getMessage());
             e.printStackTrace();
+            return "해당 닉네임은 존재하지 않습니다.";
         }
 
-        return "중거리 찰 확률 : "+longshoot1+"%";
+        return "평균 점유율 : "+Possesion1+"%\n"+div+"중거리 찰 확률 : "+longshoot1+"%\n"+"헤딩할 확률 : "+Heading1+"%\n"+div+"짧은 패스할 확률 : "+shortPass1+"%\n"+"긴 패스할 확률 : "+longPass1+"%\n"
+                +"ZW할 확률 : "+drivenPass1+"%\n"+"스루패스할 확률 : "+throughPass1+"%";
     }
 
     public void getMatchInfo(String MatchID, String UserID){
@@ -408,27 +465,63 @@ public class MainActivity extends Activity {
             //Log.d("home",home.getString("accessId"));
             //Log.d("U",UserID);
             if (home.getString("accessId").equals(UserID)) {
-                Log.d("hi","hi");
+                //Log.d("hi","hi");
                 Shoot=home.getJSONObject("shoot");
                 ShootTotal=Shoot.getString("shootTotal");
                 shootOutPenalty=Shoot.getString("shootOutPenalty");
+                shootHeading=Shoot.getString("shootHeading");
                 st=Integer.parseInt(ShootTotal);
                 sop=Integer.parseInt(shootOutPenalty);
+                hd=Integer.parseInt(shootHeading);
                 //double longshoot=(sop/(double)st)*100;
                 //longshoot1 = String.format("%.2f", longshoot);
                 //Log.d("test","+"+st+" "+sop+ " "+longshoot);
+                matchDetail=home.getJSONObject("matchDetail");
+                Possesion=matchDetail.getString("possession");
+                Log.d("poss",ShootTotal);
+                ps=Integer.parseInt(Possesion);
+                Pass=home.getJSONObject("pass");
+                passTry=Pass.getString("passTry");
+                //Log.d("pass",passTry);
+                shortPassTry=Pass.getString("shortPassTry");
+                longPassTry=Pass.getString("longPassTry");
+                drivenGroundPassTry=Pass.getString("drivenGroundPassTry");
+                throughPassTry=Pass.getString("throughPassTry");
+                pt=Integer.parseInt(passTry);
+                spt=Integer.parseInt(shortPassTry);
+                lpt=Integer.parseInt(longPassTry);
+                dgpt=Integer.parseInt(drivenGroundPassTry);
+                tpt=Integer.parseInt(throughPassTry);
             }
             else {
-                Log.d("hi","hi");
+                //Log.d("hi","hi");
                 Shoot=away.getJSONObject("shoot");
                 ShootTotal=Shoot.getString("shootTotal");
                 shootOutPenalty=Shoot.getString("shootOutPenalty");
+                shootHeading=Shoot.getString("shootHeading");
                 st=Integer.parseInt(ShootTotal);
                 sop=Integer.parseInt(shootOutPenalty);
+                hd=Integer.parseInt(shootHeading);
                 //double longshoot=(sop/(double)st)*100;
                 //longshoot1 = String.format("%.2f", longshoot);
                 //Log.d("test","+"+st+" "+sop+ " "+longshoot);
+                matchDetail=away.getJSONObject("matchDetail");
+                Possesion=matchDetail.getString("possession");
+                ps=Integer.parseInt(Possesion);
+                Pass=away.getJSONObject("pass");
+                passTry=Pass.getString("passTry");
+                shortPassTry=Pass.getString("shortPassTry");
+                longPassTry=Pass.getString("longPassTry");
+                drivenGroundPassTry=Pass.getString("drivenGroundPassTry");
+                throughPassTry=Pass.getString("throughPassTry");
+                pt=Integer.parseInt(passTry);
+                spt=Integer.parseInt(shortPassTry);
+                lpt=Integer.parseInt(longPassTry);
+                dgpt=Integer.parseInt(drivenGroundPassTry);
+                tpt=Integer.parseInt(throughPassTry);
+                Log.d("poss",Possesion);
             }
+
             /*for (int i = 0; i < matchInfo.length(); i++) {
                 JSONObject jsonArray = matchInfo.getJSONObject(i);
 
