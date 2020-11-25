@@ -37,8 +37,9 @@ import java.util.Map;
 
 public class MainActivity extends Activity {
     JSONObject Shoot=null;
+    JSONObject yourShoot=null;
     JSONObject matchDetail=null;
-    JSONObject Pass=null;
+    //JSONObject Pass=null;
     JSONArray matchInfo=null;
     String div="--------------------------------------------\n";
     String ShootTotal="";
@@ -48,7 +49,11 @@ public class MainActivity extends Activity {
     String Possesion="";
     String Possesion1="";
     String Heading1="";
-    String shortPass1="";
+    String myNick="";
+    String otherNick="";
+    String myGoal="";
+    String yourGoal="";
+    /*String shortPass1="";
     String longPass1="";
     String drivenPass1="";
     String throughPass1="";
@@ -56,16 +61,18 @@ public class MainActivity extends Activity {
     String shortPassTry="";
     String longPassTry="";
     String drivenGroundPassTry="";
-    String throughPassTry="";
+    String throughPassTry="";*/
     int st=0;
     int sop=0;
     int ps=0;
     int hd=0;
-    int pt=0;
-    int spt=0;
-    int lpt=0;
-    int dgpt=0;
-    int tpt=0;
+    int intMyGoal=0;
+    int intYourGoal=0;
+    //int pt=0;
+    //int spt=0;
+    //int lpt=0;
+    //int dgpt=0;
+    //int tpt=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,16 +80,16 @@ public class MainActivity extends Activity {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         TextView txt1 = new TextView(this);
-        txt1.setText("닉네임");
+        txt1.setText("지피지기 백전백승\n");
         txt1.setTextSize(18);
         layout.addView(txt1);
 
         final EditText txt2 = new EditText(this);
-        txt2.setHint("구단주 명을 입력하세요...");
+        txt2.setHint("구단주 명을 입력하세요.");
         layout.addView(txt2);
 
         Button btn = new Button(this);
-        btn.setText("일대일 정보");
+        btn.setText("1ON1 순위");
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +98,7 @@ public class MainActivity extends Activity {
         });
 
         Button btn1 = new Button(this);
-        btn1.setText("이대이 정보");
+        btn1.setText("2ON2 순위");
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,14 +106,14 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button btn2 = new Button(this);
-        btn2.setText("감독모드 정보");
+        /*Button btn2 = new Button(this);
+        btn2.setText("감독모드 순위");
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadManageInfo(txt2.getText().toString());
             }
-        });
+        });*/
 
         /*Button btn3 = new Button(this);
         btn3.setText("유저 정보");
@@ -126,20 +133,21 @@ public class MainActivity extends Activity {
             }
         });
 
-        /*Button btn5 = new Button(this);
-        btn5.setText("매치 정보");
+        Button btn5 = new Button(this);
+        btn5.setText("최근 전적");
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadMatchInfo(txt2.getText().toString());
+                loadMatch(txt2.getText().toString());
             }
-        });*/
+        });
 
         layout.addView(btn);
         layout.addView(btn1);
-        layout.addView(btn2);
+        //layout.addView(btn2);
         //layout.addView(btn3);
         layout.addView(btn4);
+        layout.addView(btn5);
 
         TextView maker = new TextView(this);
         maker.setText("\n© 2020 HottJ, All rights reserved.\n");
@@ -161,7 +169,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void run() {
                         if (result == null) {}//toast("불러오기 실패");
-                        else showDialog(input + " 구단주 정보", result);
+                        else showDialog(input + "님의 1ON1 순위", result);
                     }
                 });
             }
@@ -177,14 +185,14 @@ public class MainActivity extends Activity {
                     @Override
                     public void run() {
                         if (result == null) {}//toast("불러오기 실패");
-                        else showDialog(input + " 구단주 정보", result);
+                        else showDialog(input + "님의 2ON2 순위", result);
                     }
                 });
             }
         }).start();
     }
 
-    private void loadManageInfo(final String input) {
+    /*private void loadManageInfo(final String input) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -198,9 +206,9 @@ public class MainActivity extends Activity {
                 });
             }
         }).start();
-    }
+    }*/
 
-    private void loadUserId(final String input) {
+    /*private void loadUserId(final String input) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -214,7 +222,7 @@ public class MainActivity extends Activity {
                 });
             }
         }).start();
-    }
+    }*/
 
     private void loadMatchId(final String input) {
         new Thread(new Runnable() {
@@ -225,28 +233,28 @@ public class MainActivity extends Activity {
                     @Override
                     public void run() {
                         if (result == null) {}//toast("불러오기 실패");
-                        else showDialog(input + " 구단주 정보", result);
+                        else showDialog(input + "님의 플레이 스타일", result);
                     }
                 });
             }
         }).start();
     }
 
-    /*private void loadMatchInfo(final String input) {
+    private void loadMatch(final String input) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                final String result = getMatchInfo(getMatchId(getUserId(input)));
+                final String result = getMatch(getUserId(input));
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (result == null) {}//toast("불러오기 실패");
-                        else showDialog(input + " 구단주 정보", result);
+                        else showDialog(input + "님의 최근 전적", result);
                     }
                 });
             }
         }).start();
-    }*/
+    } //최근 전적 가져옴
 
     private String get1vs1Info(String pos) {
         try {
@@ -270,7 +278,7 @@ public class MainActivity extends Activity {
             toast(e.toString());
             return null;
         }
-    }
+    } //11
     private String get2vs2Info(String pos) {
         try {
             String url = "http://fifaonline4.nexon.com/datacenter/rank_2vs?strCharacterName=" + pos.replace(" ", "+");
@@ -293,8 +301,8 @@ public class MainActivity extends Activity {
             toast(e.toString());
             return null;
         }
-    }
-    private String getManageInfo(String pos) {
+    } //22
+    /*private String getManageInfo(String pos) {
         try {
             String url = "http://fifaonline4.nexon.com/datacenter/rank_m?strCharacterName=" + pos.replace(" ", "+");
             Document data = Jsoup.connect(url).get();
@@ -316,7 +324,7 @@ public class MainActivity extends Activity {
             toast(e.toString());
             return null;
         }
-    }
+    }*/ //감모
     public String getUserId(String pos) {
         String result=null;
         String UserID=null;
@@ -385,11 +393,11 @@ public class MainActivity extends Activity {
             int matchnum=0;
             int psnum=0;
             int hdnum=0;
-            int passnum=0;
-            int shortpassnum=0;
-            int longpassnum=0;
-            int drivenpassnum=0;
-            int throughpassnum=0;
+            //int passnum=0;
+            //int shortpassnum=0;
+            //int longpassnum=0;
+            //int drivenpassnum=0;
+            //int throughpassnum=0;
             for (int i=0;i<10;i++){
                 //Log.d("json","j"+json_array.get(i));
                 result1=json_array.get(i).toString();
@@ -399,30 +407,30 @@ public class MainActivity extends Activity {
                 sopnum+=sop;
                 psnum+=ps;
                 hdnum+=hd;
-                passnum+=pt;
-                shortpassnum+=spt;
-                longpassnum+=lpt;
-                drivenpassnum+=dgpt;
-                throughpassnum+=tpt;
-                Log.d("psnum","msg"+psnum);
+                //passnum+=pt;
+                //shortpassnum+=spt;
+                //longpassnum+=lpt;
+                //drivenpassnum+=dgpt;
+                //throughpassnum+=tpt;
+                //Log.d("psnum","msg"+psnum);
             }
 
-            Log.d("ps","ms"+psnum+" "+passnum+" "+shortpassnum+" "+shootnum);
+            //Log.d("ps","ms"+psnum+" "+passnum+" "+shortpassnum+" "+shootnum);
             double longshoot=(sopnum/(double)shootnum)*100;
             double possession=(psnum/(double)matchnum);
             double heading=(hdnum/(double)shootnum)*100;
-            double shortpass=(shortpassnum/(double)passnum)*100;
-            //Log.d("short","dfa"+shortpass);
+            /*double shortpass=(shortpassnum/(double)passnum)*100;
+            Log.d("short","dfa"+shortpass);
             double longpass=(longpassnum/(double)passnum)*100;
             double drivenpass=(drivenpassnum/(double)passnum)*100;
-            double throughpass=(throughpassnum/(double)passnum)*100;
+            double throughpass=(throughpassnum/(double)passnum)*100;*/
             longshoot1 = String.format("%.2f", longshoot);
             Possesion1=String.format("%.2f",possession);
             Heading1=String.format("%.2f",heading);
-            shortPass1=String.format("%.2f",shortpass);
-            longPass1=String.format("%.2f",longpass);
-            drivenPass1=String.format("%.2f",drivenpass);
-            throughPass1=String.format("%.2f",throughpass);
+            //shortPass1=String.format("%.2f",shortpass);
+            //longPass1=String.format("%.2f",longpass);
+            //drivenPass1=String.format("%.2f",drivenpass);
+            //throughPass1=String.format("%.2f",throughpass);
         }
 
         catch (Exception e) {
@@ -432,13 +440,126 @@ public class MainActivity extends Activity {
             return "해당 닉네임은 존재하지 않습니다.";
         }
 
-        return "평균 점유율 : "+Possesion1+"%\n"+div+"중거리 찰 확률 : "+longshoot1+"%\n"+"헤딩할 확률 : "+Heading1+"%\n"+div+"짧은 패스할 확률 : "+shortPass1+"%\n"+"긴 패스할 확률 : "+longPass1+"%\n"
-                +"ZW할 확률 : "+drivenPass1+"%\n"+"스루패스할 확률 : "+throughPass1+"%";
+        return "평균 점유율 : "+Possesion1+"%\n"+div+"중거리 비율 : "+longshoot1+"%\n"+"헤딩 비율 : "+Heading1+"%\n"+div/*+"짧은 패스할 확률 : "+shortPass1+"%\n"+"긴 패스할 확률 : "+longPass1+"%\n"
+                +"ZW할 확률 : "+drivenPass1+"%\n"+"스루패스할 확률 : "+throughPass1+"%";*/;
     }
 
+    public String getMatch(String ID){
+        String result=null;
+        String result1="";
+        String result2="";
+        int win=0;
+        int draw=0;
+        int lose=0;
+        int matchNum=0;
+        JSONArray json_array = null;
+        String NexonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTA0MDI0NzkxOSIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU5NTI1MTYxMSwiZXhwIjoxNjEwODAzNjExLCJpYXQiOjE1OTUyNTE2MTF9.W4K3QQa57KhYUnsIcGyCK-jD_oBXMq1ZMKuN8KXZGO0";
+        StringBuffer sb = new StringBuffer();
+        try {
+            //String text = URLEncoder.encode(pos, "UTF-8");
+            String apiURL = "https://api.nexon.co.kr/fifaonline4/v1.0/users/"+ID+"/matches?matchtype=50&offset=0&limit=10";
+            URL url = new URL(apiURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", NexonKey);
+            InputStream is = conn.getInputStream();
+            // Get the stream
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+            // Set the result
+            result = builder.toString();
+            json_array = new JSONArray(result);
+            //Log.d("test", "json_array.get(0) = " + json_array.get(0));
+            for (int i=0;i<10;i++){
+                //Log.d("json","j"+json_array.get(i));
+                result1=json_array.get(i).toString();
+                getMatchNickGoal(result1,ID);
+                matchNum+=1;
+                if (intMyGoal>intYourGoal){
+                    win+=1;
+                }
+                else if(intMyGoal==intYourGoal){
+                    draw+=1;
+                }
+                else{
+                    lose+=1;
+                }
+                result2+="<"+myNick+"> "+myGoal+" : "+yourGoal+" <"+otherNick+">\n";
+            }
+        }
+
+        catch (Exception e) {
+            // Error calling the rest api
+            Log.e("REST_API", "GET method failed: " + e.getMessage());
+            e.printStackTrace();
+            return "해당 구단주는 존재하지 않습니다.";
+        }
+        return result2+"\n"+"최근 "+matchNum+"경기 "+win+"승"+draw+"무"+lose+"패";
+    }
+
+
+    public String getMatchNickGoal(String MatchID, String UserID){
+        String result=null;
+        //String longshoot1="";
+        String NexonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTA0MDI0NzkxOSIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU5NTI1MTYxMSwiZXhwIjoxNjEwODAzNjExLCJpYXQiOjE1OTUyNTE2MTF9.W4K3QQa57KhYUnsIcGyCK-jD_oBXMq1ZMKuN8KXZGO0";
+        StringBuffer sb = new StringBuffer();
+        try {
+            //String text = URLEncoder.encode(pos, "UTF-8");
+            String apiURL = "https://api.nexon.co.kr/fifaonline4/v1.0/matches/" + MatchID;
+            URL url = new URL(apiURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", NexonKey);
+            InputStream is = conn.getInputStream();
+            // Get the stream
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+            // Set the result
+            result = builder.toString();
+            JSONObject jsonObject = new JSONObject(result);
+            matchInfo = jsonObject.getJSONArray("matchInfo");
+            JSONObject home=matchInfo.getJSONObject(0);
+            JSONObject away=matchInfo.getJSONObject(1);
+            if (home.getString("accessId").equals(UserID)) {
+                //Log.d("hi","hi");
+                myNick=home.getString("nickname");
+                otherNick=away.getString("nickname");
+                Shoot=home.getJSONObject("shoot");
+                yourShoot=away.getJSONObject("shoot");
+                myGoal=Shoot.getString("goalTotal");
+                yourGoal=yourShoot.getString("goalTotal");
+                intMyGoal=Integer.parseInt(myGoal);
+                intYourGoal=Integer.parseInt(yourGoal);
+            }
+            else {
+                myNick=away.getString("nickname");
+                otherNick=home.getString("nickname");
+                Shoot=away.getJSONObject("shoot");
+                yourShoot=home.getJSONObject("shoot");
+                myGoal=Shoot.getString("goalTotal");
+                yourGoal=yourShoot.getString("goalTotal");
+                intMyGoal=Integer.parseInt(myGoal);
+                intYourGoal=Integer.parseInt(yourGoal);
+            }
+        }
+        catch (Exception e) {
+            // Error calling the rest api
+            Log.e("REST_API", "GET method failed: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "<"+myNick+"> "+myGoal+" : "+yourGoal+" <"+otherNick+">";
+    }
     public void getMatchInfo(String MatchID, String UserID){
         String result=null;
-        String longshoot1="";
+        //String longshoot1="";
         String NexonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50X2lkIjoiMTA0MDI0NzkxOSIsImF1dGhfaWQiOiIyIiwidG9rZW5fdHlwZSI6IkFjY2Vzc1Rva2VuIiwic2VydmljZV9pZCI6IjQzMDAxMTQ4MSIsIlgtQXBwLVJhdGUtTGltaXQiOiIyMDAwMDoxMCIsIm5iZiI6MTU5NTI1MTYxMSwiZXhwIjoxNjEwODAzNjExLCJpYXQiOjE1OTUyNTE2MTF9.W4K3QQa57KhYUnsIcGyCK-jD_oBXMq1ZMKuN8KXZGO0";
         StringBuffer sb = new StringBuffer();
         try {
@@ -466,10 +587,15 @@ public class MainActivity extends Activity {
             //Log.d("U",UserID);
             if (home.getString("accessId").equals(UserID)) {
                 //Log.d("hi","hi");
+                myNick=home.getString("accessId");
+                otherNick=away.getString("accessId");
                 Shoot=home.getJSONObject("shoot");
+                yourShoot=away.getJSONObject("shoot");
                 ShootTotal=Shoot.getString("shootTotal");
                 shootOutPenalty=Shoot.getString("shootOutPenalty");
                 shootHeading=Shoot.getString("shootHeading");
+                myGoal=Shoot.getString("goalTotal");
+                yourGoal=yourShoot.getString("goalTotal");
                 st=Integer.parseInt(ShootTotal);
                 sop=Integer.parseInt(shootOutPenalty);
                 hd=Integer.parseInt(shootHeading);
@@ -478,24 +604,28 @@ public class MainActivity extends Activity {
                 //Log.d("test","+"+st+" "+sop+ " "+longshoot);
                 matchDetail=home.getJSONObject("matchDetail");
                 Possesion=matchDetail.getString("possession");
-                Log.d("poss",ShootTotal);
+                //Log.d("poss",ShootTotal);
                 ps=Integer.parseInt(Possesion);
-                Pass=home.getJSONObject("pass");
-                passTry=Pass.getString("passTry");
+                //Pass=home.getJSONObject("pass");
+                //passTry=Pass.getString("passTry");
                 //Log.d("pass",passTry);
-                shortPassTry=Pass.getString("shortPassTry");
-                longPassTry=Pass.getString("longPassTry");
-                drivenGroundPassTry=Pass.getString("drivenGroundPassTry");
-                throughPassTry=Pass.getString("throughPassTry");
-                pt=Integer.parseInt(passTry);
-                spt=Integer.parseInt(shortPassTry);
-                lpt=Integer.parseInt(longPassTry);
-                dgpt=Integer.parseInt(drivenGroundPassTry);
-                tpt=Integer.parseInt(throughPassTry);
+                //shortPassTry=Pass.getString("shortPassTry");
+                //longPassTry=Pass.getString("longPassTry");
+                //drivenGroundPassTry=Pass.getString("drivenGroundPassTry");
+                //throughPassTry=Pass.getString("throughPassTry");
+                //pt=Integer.parseInt(passTry);
+                //spt=Integer.parseInt(shortPassTry);
+                //lpt=Integer.parseInt(longPassTry);
+                //dgpt=Integer.parseInt(drivenGroundPassTry);
+                //tpt=Integer.parseInt(throughPassTry);
             }
             else {
-                //Log.d("hi","hi");
+                myNick=away.getString("accessId");
+                otherNick=home.getString("accessId");
                 Shoot=away.getJSONObject("shoot");
+                yourShoot=home.getJSONObject("shoot");
+                myGoal=Shoot.getString("goalTotal");
+                yourGoal=yourShoot.getString("goalTotal");
                 ShootTotal=Shoot.getString("shootTotal");
                 shootOutPenalty=Shoot.getString("shootOutPenalty");
                 shootHeading=Shoot.getString("shootHeading");
@@ -508,34 +638,25 @@ public class MainActivity extends Activity {
                 matchDetail=away.getJSONObject("matchDetail");
                 Possesion=matchDetail.getString("possession");
                 ps=Integer.parseInt(Possesion);
-                Pass=away.getJSONObject("pass");
-                passTry=Pass.getString("passTry");
-                shortPassTry=Pass.getString("shortPassTry");
-                longPassTry=Pass.getString("longPassTry");
-                drivenGroundPassTry=Pass.getString("drivenGroundPassTry");
-                throughPassTry=Pass.getString("throughPassTry");
-                pt=Integer.parseInt(passTry);
-                spt=Integer.parseInt(shortPassTry);
-                lpt=Integer.parseInt(longPassTry);
-                dgpt=Integer.parseInt(drivenGroundPassTry);
-                tpt=Integer.parseInt(throughPassTry);
-                Log.d("poss",Possesion);
+                //Pass=away.getJSONObject("pass");
+                //passTry=Pass.getString("passTry");
+                //shortPassTry=Pass.getString("shortPassTry");
+                //longPassTry=Pass.getString("longPassTry");
+                //drivenGroundPassTry=Pass.getString("drivenGroundPassTry");
+                //throughPassTry=Pass.getString("throughPassTry");
+                //pt=Integer.parseInt(passTry);
+                //spt=Integer.parseInt(shortPassTry);
+                //lpt=Integer.parseInt(longPassTry);
+                //dgpt=Integer.parseInt(drivenGroundPassTry);
+                //tpt=Integer.parseInt(throughPassTry);
+                //Log.d("poss",Possesion);
             }
-
-            /*for (int i = 0; i < matchInfo.length(); i++) {
-                JSONObject jsonArray = matchInfo.getJSONObject(i);
-
-                matchDetail=jsonArray.getJSONObject("matchDetail");
-                Log.d("acc","+");
-            }*/
-            //Log.d("test","+"+matchDetail);
         }
         catch (Exception e) {
             // Error calling the rest api
             Log.e("REST_API", "GET method failed: " + e.getMessage());
             e.printStackTrace();
         }
-        //return longshoot1;
     }
     public void showDialog(String title, String msg) {
         try {
